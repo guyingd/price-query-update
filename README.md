@@ -61,5 +61,4 @@ npm run deploy
 
 ## 许可证
 
-ISC License"# price-query-update" 
-"# price-query-update" 
+ISC License

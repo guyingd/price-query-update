@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>君之恋成本查询系统</title>
+    <!-- 主题管理（需要放在最前面） -->
+    <script src="/theme.js"></script>
+    <!-- NextUI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@nextui-org/theme@2.1.18/dist/theme.min.css">
+    <!-- 图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <div class="layout">
+            <!-- 顶部导航 -->
+            <nav class="navbar">
+                <div class="navbar-content">
+                    <div class="navbar-left">
+                        <div class="logo">
+                            <i class="ri-search-line"></i>
+                            君之恋成本查询系统
+                        </div>
+                    </div>
+                    <div class="navbar-right">
+                        <a href="/about" class="nav-link">
+                            <i class="ri-information-line"></i>
+                            关于
+                        </a>
+                        <a href="/admin" class="nav-link">
+                            <i class="ri-settings-line"></i>
+                            管理
+                        </a>
+                        <div class="theme-switch">
+                            <button class="switch-button" @click="toggleTheme">
+                                <i :class="isDark ? 'ri-moon-fill' : 'ri-sun-fill'"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <main class="main-content">
+                <!-- 搜索区域 -->
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="ri-search-line"></i>
+                        <input 
+                            type="text" 
+                            v-model="searchKeyword"
+                            @input="handleSearch"
+                            placeholder="请输入商品名称..."
+                            class="search-input"
+                        >
+                        <button 
+                            class="search-button"
+                            @click="handleSearch"
+                            :disabled="loading"
+                        >
+                            <i :class="loading ? 'ri-loader-4-line spin' : 'ri-arrow-right-line'"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 结果展示区域 -->
+                <div class="results-container">
+                    <div v-if="loading" class="loading-state">
+                        <i class="ri-loader-4-line spin"></i>
+                        <span>搜索中...</span>
+                    </div>
+                    
+                    <div v-else-if="results.length === 0 && searchKeyword" class="empty-state">
+                        <i class="ri-inbox-line"></i>
+                        <span>未找到匹配的商品</span>
+                    </div>
+
+                    <div v-else>
+                        <div class="controls" v-if="results.length > 0">
+                            <button class="control-button" @click="expandAll">
+                                <i class="ri-add-line"></i> 展开全部
+                            </button>
+                            <button class="control-button" @click="collapseAll">
+                                <i class="ri-subtract-line"></i> 折叠全部
+                            </button>
+                        </div>
+                        <div class="results-grid">
+                            <div v-for="(category, index) in results" 
+                                 :key="index"
+                                 class="category-card"
+                            >
+                                <div class="category-header" 
+                                     @click="toggleCategory(index)"
+                                     :class="{ 'is-expanded': expandedCategories.has(category.category) }"
+                                >
+                                    <i class="ri-price-tag-3-line"></i>
+                                    <h3>{{ category.category }}</h3>
+                                    <i class="ri-arrow-down-s-line expand-icon"></i>
+                                </div>
+                                <div class="products-list" :class="{ 'expanded': expandedCategories.has(category.category) }">
+                                    <div v-for="product in category.products" 
+                                         :key="product.name"
+                                         class="product-item"
+                                    >
+                                        <div class="product-name">
+                                            <i class="ri-shopping-bag-line"></i>
+                                            {{ product.name }}
+                                        </div>
+                                        <div class="product-price">
+                                            ¥{{ product.price }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="footer">
+                <div class="copyright">
+                    © 2024 君之恋成本查询系统
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- NextUI -->
+    <script src="https://cdn.jsdelivr.net/npm/@nextui-org/vue@2.2.9/dist/umd/index.min.js"></script>
+    <!-- 主程序 -->
+    <script src="app.js"></script>
+</body>
+</html> 

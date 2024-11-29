@@ -1,0 +1,31 @@
+# 自动检测文本文件并执行 LF 标准化
+* text=auto
+
+# 源代码
+*.js text
+*.json text
+*.html text
+*.css text
+*.md text
+*.yml text
+*.yaml text
+
+# 文档
+*.md text
+*.txt text
+
+# 配置文件
+.gitignore text
+.gitattributes text
+*.lock text
+.env.example text
+
+# 二进制文件
+*.ico binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary 

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品管理 - 君之恋成本查询系统</title>
+    <script src="/theme.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .category-section {
+            background: var(--card-background);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .product-table th,
+        .product-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .product-table th {
+            background: var(--background);
+            font-weight: 600;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--background);
+            color: var(--content);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--hover);
+            color: white;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--background);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 16px var(--shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--content);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--card-background);
+            color: var(--content);
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="layout">
+            <nav class="navbar">
+                <div class="navbar-content">
+                    <div class="navbar-left">
+                        <div class="logo">
+                            <i class="ri-settings-line"></i>
+                            君之恋成本管理系统
+                        </div>
+                    </div>
+                    <div class="navbar-right">
+                        <a href="/" class="nav-link">
+                            <i class="ri-home-line"></i>
+                            返回首页
+                        </a>
+                        <div class="theme-switch">
+                            <button class="switch-button" @click="toggleTheme">
+                                <i :class="isDark ? 'ri-moon-fill' : 'ri-sun-fill'"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <main class="main-content">
+                <div class="admin-container">
+                    <div class="admin-header">
+                        <h1>商品管理</h1>
+                        <div class="admin-actions">
+                            <div class="search-box">
+                                <i class="ri-search-line"></i>
+                                <input 
+                                    type="text" 
+                                    v-model="searchKeyword"
+                                    @input="handleSearch"
+                                    placeholder="搜索分类或商品..."
+                                    class="search-input"
+                                >
+                            </div>
+                            <button class="btn btn-primary" @click="showAddCategoryModal">
+                                <i class="ri-add-line"></i>
+                                添加分类
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="control-button" @click="expandAll">
+                            <i class="ri-add-line"></i> 展开全部
+                        </button>
+                        <button class="control-button" @click="collapseAll">
+                            <i class="ri-subtract-line"></i> 折叠全部
+                        </button>
+                    </div>
+
+                    <div v-for="(category, index) in filteredCategories" 
+                         :key="index"
+                         class="category-section"
+                    >
+                        <div class="category-header">
+                            <div class="category-name">
+                                <button class="btn-icon" @click="toggleCategory(index)">
+                                    <i :class="expandedCategories.has(category.category) ? 'ri-arrow-down-s-line' : 'ri-arrow-right-s-line'"></i>
+                                </button>
+                                <i class="ri-price-tag-3-line"></i>
+                                <h3>{{ category.category }}</h3>
+                            </div>
+                            <div class="category-actions">
+                                <button class="btn" @click="showEditCategoryModal(category)">
+                                    <i class="ri-edit-line"></i>
+                                    编辑分类
+                                </button>
+                                <button class="btn btn-danger" @click="deleteCategory(category)">
+                                    <i class="ri-delete-bin-line"></i>
+                                    删除分类
+                                </button>
+                                <button class="btn btn-primary" @click="showAddProductModal(category)">
+                                    <i class="ri-add-line"></i>
+                                    添加商品
+                                </button>
+                            </div>
+                        </div>
+                        <table class="product-table" v-show="expandedCategories.has(category.category)">
+                            <thead>
+                                <tr>
+                                    <th>商品名称</th>
+                                    <th>价格</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="product in category.products" :key="product.name">
+                                    <td>{{ product.name }}</td>
+                                    <td>¥{{ product.price }}</td>
+                                    <td>
+                                        <div class="product-actions">
+                                            <button class="btn" @click="showEditProductModal(category, product)">
+                                                <i class="ri-edit-line"></i>
+                                                编辑
+                                            </button>
+                                            <button class="btn" @click="deleteProduct(category, product)">
+                                                <i class="ri-delete-bin-line"></i>
+                                                删除
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- 添加/编辑分类模态框 -->
+        <div class="modal" v-if="showCategoryModal" @click.self="closeCategoryModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>{{ editingCategory ? '编辑分类' : '添加分类' }}</h2>
+                    <button class="btn" @click="closeCategoryModal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">分类名称</label>
+                    <input type="text" class="form-input" v-model="categoryForm.name">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" @click="closeCategoryModal">取消</button>
+                    <button class="btn btn-primary" @click="saveCategory">保存</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 添加/编辑商品模态框 -->
+        <div class="modal" v-if="showProductModal" @click.self="closeProductModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>{{ editingProduct ? '编辑商品' : '添加商品' }}</h2>
+                    <button class="btn" @click="closeProductModal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">商品名称</label>
+                    <input type="text" class="form-input" v-model="productForm.name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">价格</label>
+                    <input type="number" class="form-input" v-model="productForm.price">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" @click="closeProductModal">取消</button>
+                    <button class="btn btn-primary" @click="saveProduct">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html> 

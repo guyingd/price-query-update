@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - 君之恋成本查询系统</title>
+    <!-- 主题管理（需要放在最前面） -->
+    <script src="/theme.js"></script>
+    <!-- NextUI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@nextui-org/theme@2.1.18/dist/theme.min.css">
+    <!-- 图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .about-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px var(--shadow);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--content);
+        }
+
+        .feature-desc {
+            color: var(--content);
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .contact-info {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: var(--card-background);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .contact-info a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .back-button:hover {
+            background: var(--hover);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <a href="/" class="back-button">
+            <i class="ri-arrow-left-line"></i>
+            返回首页
+        </a>
+
+        <div class="about-container">
+            <h1>关于我们</h1>
+            <p>君之恋成本查询系统是专为美容理疗仪器行业打造的成本管理工具，<br>帮助您轻松管理和优化产品成本。</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                    <h2 class="feature-title">快速搜索</h2>
+                    <p class="feature-desc">
+                        智能实时搜索功能，<br>
+                        快速查询原料和产品成本
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="ri-stack-line"></i>
+                    </div>
+                    <h2 class="feature-title">分类管理</h2>
+                    <p class="feature-desc">
+                        专业的分类系统，<br>
+                        原料、产品分类清晰
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="ri-shield-check-line"></i>
+                    </div>
+                    <h2 class="feature-title">安全可靠</h2>
+                    <p class="feature-desc">
+                        本地数据存储，<br>
+                        确保成本数据安全
+                    </p>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <h3>联系方式</h3>
+                <p>开发者：袁子兵</p>
+                <p>邮箱：<a href="mailto:2739218253@qq.com">2739218253@qq.com</a></p>
+                <p>Version 1.0.4</p>
+                <p>更新日期：2024-11-29</p>
+                <div class="copyright-notice">
+                    <p style="color: #ff4d4f; margin-top: 1rem;">版权声明</p>
+                    <p style="font-size: 0.875rem; line-height: 1.6;">
+                        本软件为付费授权软件，未经授权严禁复制、传播或用于商业用途。<br>
+                        违者将承担相应的法律责任。
+                    </p>
+                </div>
+            </div>
+
+            <div class="copyright">
+                © 2024 君之恋成本查询系统 All Rights Reserved.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 主题已经由 theme.js 初始化
+    </script>
+</body>
+</html> 

@@ -1,0 +1,73 @@
+{
+  "name": "price-query-system",
+  "version": "1.0.4",
+  "description": "君之恋成本查询系统",
+  "homepage": ".",
+  "author": {
+    "name": "袁子兵",
+    "email": "2739218253@qq.com"
+  },
+  "license": "ISC",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "prebuild": "node scripts/copy-icon.js",
+    "build": "electron-builder",
+    "dev": "nodemon server.js",
+    "vercel-build": "echo 'Build step completed'",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.6.0",
+    "@electron-forge/maker-deb": "^7.6.0",
+    "@electron-forge/maker-squirrel": "^7.6.0",
+    "@electron-forge/maker-zip": "^7.6.0",
+    "electron": "^21.4.4",
+    "electron-builder": "^25.1.8",
+    "nodemon": "^2.0.22"
+  },
+  "build": {
+    "appId": "com.yuanzibing.pricequery",
+    "productName": "君之恋成本查询系统",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "resources/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "installerIcon": "resources/icon.ico",
+      "uninstallerIcon": "resources/icon.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "shortcutName": "${productName}",
+      "uninstallDisplayName": "${productName}",
+      "deleteAppDataOnUninstall": true
+    },
+    "files": [
+      "**/*",
+      "resources/**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
+    ]
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
