@@ -6,7 +6,10 @@ const path = require('path');
 // 读取数据文件
 const productsData = (() => {
     try {
-        return JSON.parse(fs.readFileSync(path.join(process.cwd(), 'products.json'), 'utf8'));
+        const filePath = process.env.VERCEL 
+            ? './products.json'  // Vercel 环境
+            : path.join(process.cwd(), 'products.json');  // 本地环境
+        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
     } catch (error) {
         console.error('无法读取products.json:', error);
         throw new Error('无法加载数据文件');
