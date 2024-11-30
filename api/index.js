@@ -7,12 +7,12 @@ const path = require('path');
 const productsData = (() => {
     try {
         const filePath = process.env.VERCEL 
-            ? './products.json'  // Vercel 环境
+            ? path.join(__dirname, '../products.json')  // Vercel 环境
             : path.join(process.cwd(), 'products.json');  // 本地环境
         return JSON.parse(fs.readFileSync(filePath, 'utf8'));
     } catch (error) {
         console.error('无法读取products.json:', error);
-        throw new Error('无法加载数据文件');
+        return {}; // 返回空对象而不是抛出错误
     }
 })();
 
@@ -70,6 +70,15 @@ app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.sendStatus(200);
+});
+
+// 错误处理中间件
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        error: '服务器内部错误',
+        message: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
 });
 
 module.exports = app; 

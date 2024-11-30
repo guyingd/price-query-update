@@ -6,8 +6,6 @@
     <title>君之恋成本查询系统</title>
     <!-- 主题管理（需要放在最前面） -->
     <script src="/theme.js"></script>
-    <!-- NextUI -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@nextui-org/theme@2.1.18/dist/theme.min.css">
     <!-- 图标 -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -19,28 +17,34 @@
             <nav class="navbar">
                 <div class="navbar-content">
                     <div class="navbar-left">
+                        <button class="menu-button" @click="toggleMenu" aria-label="菜单">
+                            <i class="ri-menu-line"></i>
+                        </button>
                         <div class="logo">
                             <i class="ri-search-line"></i>
-                            君之恋成本查询系统
+                            <span class="logo-text">君之恋成本查询系统</span>
                         </div>
                     </div>
-                    <div class="navbar-right">
-                        <a href="/about" class="nav-link">
-                            <i class="ri-information-line"></i>
-                            关于
-                        </a>
-                        <a href="/admin" class="nav-link">
-                            <i class="ri-settings-line"></i>
-                            管理
-                        </a>
-                        <a href="https://jzl.guyinga.top" target="_blank" class="nav-link">
-                            <i class="ri-global-line"></i>
-                            在线版
-                        </a>
-                        <div class="theme-switch">
-                            <button class="switch-button" @click="toggleTheme">
-                                <i :class="isDark ? 'ri-moon-fill' : 'ri-sun-fill'"></i>
-                            </button>
+                    <div class="navbar-right" :class="{ 'is-active': isMenuOpen }">
+                        <div class="mobile-overlay" @click="toggleMenu"></div>
+                        <div class="nav-links">
+                            <a href="/about" class="nav-link">
+                                <i class="ri-information-line"></i>
+                                <span>关于</span>
+                            </a>
+                            <a href="/admin" class="nav-link">
+                                <i class="ri-settings-line"></i>
+                                <span>管理</span>
+                            </a>
+                            <a href="#" onclick="openExternal('https://jzl.guyinga.top')" class="nav-link">
+                                <i class="ri-global-line"></i>
+                                <span>在线版</span>
+                            </a>
+                            <div class="theme-switch">
+                                <button class="switch-button" @click="toggleTheme">
+                                    <i :class="isDark ? 'ri-moon-fill' : 'ri-sun-fill'"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,16 +128,14 @@
 
             <footer class="footer">
                 <div class="copyright">
-                    © 2024 君之恋成本查询系统
+                    © 24 君之恋成本查询系统
                 </div>
             </footer>
         </div>
     </div>
 
     <!-- Vue 3 -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <!-- NextUI -->
-    <script src="https://cdn.jsdelivr.net/npm/@nextui-org/vue@2.2.9/dist/umd/index.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
     <!-- 主程序 -->
     <script src="app.js"></script>
 </body>
