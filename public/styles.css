@@ -6,6 +6,13 @@
     --hover: #0060DF;
     --border: #E4E4E7;
     --shadow: rgba(0, 0, 0, 0.1);
+    --transition-duration: 0.3s;
+    --transition-timing: ease;
+    --max-width: 1200px;
+    --header-height: 64px;
+    --footer-height: 60px;
+    --search-height: 48px;
+    --mobile-menu-width: 280px;
 }
 
 [data-theme="dark"] {
@@ -42,6 +49,7 @@ html {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-top: var(--header-height);
 }
 
 .navbar {
@@ -53,15 +61,19 @@ html {
     backdrop-filter: blur(10px);
     will-change: transform, opacity;
     backface-visibility: hidden;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
 }
 
 .navbar-content {
-    max-width: 1200px;
+    max-width: var(--max-width);
     margin: 0 auto;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 .navbar-left,
@@ -121,8 +133,8 @@ html {
 }
 
 .search-container {
-    max-width: 600px;
-    margin: 0 auto 2rem;
+    max-width: min(600px, 90%);
+    margin: 2rem auto;
 }
 
 .search-box {
@@ -136,6 +148,7 @@ html {
     transition: all 0.2s ease;
     will-change: transform, opacity;
     backface-visibility: hidden;
+    height: var(--search-height);
 }
 
 .search-box:focus-within {
@@ -178,9 +191,12 @@ html {
 }
 
 .results-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 0 auto;
+    max-width: var(--max-width);
+    padding: 0 1rem;
 }
 
 .category-card {
@@ -189,6 +205,13 @@ html {
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--border);
+    transition: all 0.2s ease;
+    height: fit-content;
+}
+
+.category-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow);
 }
 
 .category-header {
@@ -271,6 +294,7 @@ html {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    animation: fadeIn 0.3s ease forwards;
 }
 
 .loading-state i,
@@ -306,23 +330,40 @@ html {
 
 @media (max-width: 768px) {
     .navbar-content {
-        padding: 1rem;
+        padding: 0.5rem 1rem;
     }
 
     .main-content {
-        padding: 5rem 1rem 1rem;
+        padding: 1rem;
+    }
+
+    .search-container {
+        margin: 1rem auto;
     }
 
     .results-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
-    .nav-link span {
-        display: none;
+    .navbar-right {
+        position: fixed;
+        top: 0;
+        right: calc(-1 * var(--mobile-menu-width));
+        bottom: 0;
+        width: var(--mobile-menu-width);
+        background: var(--background);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        box-shadow: -4px 0 12px var(--shadow);
     }
 
-    .nav-link {
-        padding: 0.5rem;
+    .navbar-right.is-active {
+        transform: translateX(calc(-1 * var(--mobile-menu-width)));
+    }
+
+    :root {
+        --header-height: 56px;
     }
 }
 
@@ -362,5 +403,81 @@ html {
 
     .category-card {
         height: fit-content;
+    }
+}
+
+/* 移动端菜单按钮 */
+.menu-button {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--content);
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    font-size: 1.25rem;
+}
+
+/* 移动端导航遮罩 */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+@media (max-width: 768px) {
+    .menu-button {
+        display: block;
+    }
+
+    .logo-text {
+        font-size: 1rem;
+    }
+
+    .navbar-content {
+        padding: 1rem;
+    }
+
+    .navbar-right {
+        position: fixed;
+        top: 0;
+        right: -280px;
+        bottom: 0;
+        width: 280px;
+        background: var(--background);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+    }
+
+    .navbar-right.is-active {
+        transform: translateX(-280px);
+    }
+
+    .navbar-right.is-active .mobile-overlay {
+        display: block;
+    }
+
+    .nav-links {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        width: 100%;
+    }
+
+    .nav-link span {
+        display: inline;
     }
 } 

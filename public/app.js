@@ -7,6 +7,8 @@ const app = createApp({
         const loading = ref(false);
         const isDark = ref(false);
         const expandedCategories = ref(new Set());
+        const isMenuOpen = ref(false);
+        const searchInput = ref(null);
 
         // 切换分类折叠状态
         const toggleCategory = (index) => {
@@ -47,8 +49,24 @@ const app = createApp({
             }
         };
 
+        // 搜索框焦点处理
+        const handleSearchFocus = () => {
+            // 移动端时，滚动到搜索框
+            if (window.innerWidth <= 768) {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        };
+
         // 搜索处理
         const handleSearch = async () => {
+            // 移动端时，收起菜单
+            if (isMenuOpen.value) {
+                closeMenu();
+            }
+
             if (!searchKeyword.value.trim()) {
                 await loadAllCategories();
                 return;
@@ -74,6 +92,19 @@ const app = createApp({
             ThemeManager.applyTheme(theme);
         };
 
+        // 切换菜单
+        const toggleMenu = () => {
+            isMenuOpen.value = !isMenuOpen.value;
+            // 切换body滚动
+            document.body.style.overflow = isMenuOpen.value ? 'hidden' : '';
+        };
+
+        // 关闭菜单
+        const closeMenu = () => {
+            isMenuOpen.value = false;
+            document.body.style.overflow = '';
+        };
+
         // 初始化主题和加载分类
         onMounted(() => {
             const savedTheme = ThemeManager.getCurrentTheme();
@@ -86,12 +117,17 @@ const app = createApp({
             results,
             loading,
             isDark,
+            expandedCategories,
+            isMenuOpen,
+            toggleMenu,
+            closeMenu,
             handleSearch,
             toggleTheme,
-            expandedCategories,
             toggleCategory,
             expandAll,
-            collapseAll
+            collapseAll,
+            searchInput,
+            handleSearchFocus
         };
     }
 });

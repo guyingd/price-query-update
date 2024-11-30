@@ -59,8 +59,10 @@
                             type="text" 
                             v-model="searchKeyword"
                             @input="handleSearch"
-                            placeholder="请输入商品名称..."
+                            placeholder="搜索商品名称或价格..."
                             class="search-input"
+                            ref="searchInput"
+                            @focus="handleSearchFocus"
                         >
                         <button 
                             class="search-button"
