@@ -13,6 +13,17 @@ if (!fs.existsSync(dataDir)) {
 const dataFile = path.join(dataDir, 'products.json');
 const versionFile = path.join(dataDir, 'version.txt');
 
+// 如果数据文件不存在，创建一个空的数据文件
+if (!fs.existsSync(dataFile)) {
+    // 复制初始数据文件
+    fs.copyFileSync(
+        path.join(__dirname, 'products.json'),
+        dataFile
+    );
+    // 创建版本文件
+    fs.writeFileSync(versionFile, DATA_VERSION, 'utf8');
+}
+
 // 数据版本控制
 const DATA_VERSION = "1.0.4"; // 与软件版本保持一致
 
@@ -33,11 +44,20 @@ function checkAndUpdateData() {
             // 更新版本信息
             fs.writeFileSync(versionFile, DATA_VERSION, 'utf8');
             // 重新加载数据
-            Object.assign(productsData, JSON.parse(fs.readFileSync(dataFile, 'utf8')));
+            if (productsData) {
+                Object.assign(productsData, JSON.parse(fs.readFileSync(dataFile, 'utf8')));
+            }
             console.log('数据更新完成');
         }
     } catch (error) {
         console.error('数据更新失败:', error);
+        // 如果更新失败，确保至少有一个可用的数据文件
+        if (!fs.existsSync(dataFile)) {
+            fs.writeFileSync(dataFile, '{}', 'utf8');
+        }
+        if (!fs.existsSync(versionFile)) {
+            fs.writeFileSync(versionFile, DATA_VERSION, 'utf8');
+        }
     }
 }
 
@@ -71,12 +91,14 @@ app.use(express.static(path.join(__dirname, 'public'), {
     lastModified: true
 }));
 
-// 管理页面路由
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+// 路由处理
+app.get(['/', '/admin', '/about'], (req, res) => {
+    const page = req.path === '/' ? 'index.html' : 
+                 req.path.substring(1) + '.html';
+    res.sendFile(path.join(__dirname, 'public', page));
 });
 
-// 搜索API
+// API 路由
 app.get('/api/search', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');
     const keyword = req.query.keyword;
@@ -107,16 +129,6 @@ app.get('/api/search', (req, res) => {
     }
     
     res.json(results);
-});
-
-// 关于页面路由
-app.get('/about', (req, res) => {
-    res.sendFile(path.join(__dirname, 'resources', 'about.html'));
-});
-
-// 添加根路由处理
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // API 路由

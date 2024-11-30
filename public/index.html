@@ -6,6 +6,8 @@
     <title>君之恋成本查询系统</title>
     <!-- 主题管理（需要放在最前面） -->
     <script src="/theme.js"></script>
+    <!-- NextUI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@nextui-org/theme@2.1.18/dist/theme.min.css">
     <!-- 图标 -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -35,10 +37,6 @@
                             <a href="/admin" class="nav-link">
                                 <i class="ri-settings-line"></i>
                                 <span>管理</span>
-                            </a>
-                            <a href="#" onclick="openExternal('https://jzl.guyinga.top')" class="nav-link">
-                                <i class="ri-global-line"></i>
-                                <span>在线版</span>
                             </a>
                             <div class="theme-switch">
                                 <button class="switch-button" @click="toggleTheme">
@@ -75,7 +73,12 @@
                 </div>
 
                 <!-- 结果展示区域 -->
-                <div class="results-container">
+                <div class="results-container" style="overflow: hidden;">
+                    <div class="results-header" v-if="results.length > 0">
+                        <div class="results-count">
+                            找到 {{ totalProducts }} 个商品，共 {{ results.length }} 个分类
+                        </div>
+                    </div>
                     <div v-if="loading" class="loading-state">
                         <i class="ri-loader-4-line spin"></i>
                         <span>搜索中...</span>
@@ -95,7 +98,7 @@
                                 <i class="ri-subtract-line"></i> 折叠全部
                             </button>
                         </div>
-                        <div class="results-grid">
+                        <div class="results-grid" style="overflow: visible;">
                             <div v-for="(category, index) in results" 
                                  :key="index"
                                  class="category-card"

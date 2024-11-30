@@ -1,6 +1,6 @@
 {
   "name": "price-query-system",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "君之恋成本查询系统",
   "homepage": ".",
   "author": {
@@ -64,6 +64,7 @@
     "files": [
       "**/*",
       "resources/**/*",
+      "public/**/*",
       "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
     ]
   },

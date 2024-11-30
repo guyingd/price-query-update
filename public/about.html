@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于 - 君之恋成本查询系统</title>
+    <script src="/theme.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body class="bg-black text-white min-h-screen">
+    <div id="app">
+        <div class="min-h-screen flex flex-col">
+            <!-- 导航栏 -->
+            <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg border-b border-white/10">
+                <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <i class="ri-information-line text-2xl text-primary"></i>
+                        <span class="text-lg font-semibold">关于系统</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="/" class="flex items-center space-x-2 text-sm opacity-80 hover:opacity-100">
+                            <i class="ri-home-line"></i>
+                            <span>返回首页</span>
+                        </a>
+                        <button @click="toggleTheme" class="p-2 rounded-lg hover:bg-white/10">
+                            <i :class="isDark ? 'ri-moon-fill' : 'ri-sun-fill'" class="text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <main class="flex-1 max-w-7xl mx-auto px-4 pt-24 pb-8">
+                <!-- 页面内容 -->
+                <div class="text-center mb-12">
+                    <h1 class="text-3xl font-bold mb-3 bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
+                        关于系统
+                    </h1>
+                    <p class="text-lg opacity-60">君之恋成本查询系统是一个专业的美容理疗仪器成本管理工具</p>
+                </div>
+
+                <!-- 功能特点 -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+                    <!-- 快速搜索 -->
+                    <div class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10">
+                        <div class="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 mb-4">
+                            <i class="ri-search-line text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">快速搜索</h3>
+                        <p class="text-sm opacity-60">智能实时搜索功能，快速查询原料和产品成本</p>
+                    </div>
+
+                    <!-- 分类管理 -->
+                    <div class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10">
+                        <div class="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 mb-4">
+                            <i class="ri-stack-line text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">分类管理</h3>
+                        <p class="text-sm opacity-60">专业的分类系统，原料、产品分类清晰</p>
+                    </div>
+
+                    <!-- 安全可靠 -->
+                    <div class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10">
+                        <div class="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 mb-4">
+                            <i class="ri-shield-check-line text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">安全可靠</h3>
+                        <p class="text-sm opacity-60">本地数据存储，确保成本数据安全</p>
+                    </div>
+                </div>
+
+                <!-- 联系信息 -->
+                <div class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 mb-8">
+                    <h2 class="text-xl font-semibold mb-6">联系方式</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <i class="ri-user-line text-primary"></i>
+                            <span>开发者：袁子兵</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="ri-mail-line text-primary"></i>
+                            <a href="mailto:2739218253@qq.com" class="hover:text-primary">2739218253@qq.com</a>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="ri-global-line text-primary"></i>
+                            <a href="https://jzl.guyinga.top" target="_blank" class="hover:text-primary">https://jzl.guyinga.top</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 版权声明 -->
+                <div class="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10">
+                    <h3 class="text-red-500 font-semibold mb-4">版权声明</h3>
+                    <p class="text-sm leading-relaxed opacity-90">
+                        本软件为付费授权软件，未经授权严禁复制、传播或用于商业用途。<br>
+                        违者将承担相应的法律责任。
+                    </p>
+                </div>
+            </main>
+
+            <footer class="py-6 text-center text-sm opacity-60">
+                <div>© 24 君之恋成本查询系统</div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script>
+        const { createApp, ref } = Vue;
+        const app = createApp({
+            setup() {
+                const isDark = ref(true);
+
+                const toggleTheme = () => {
+                    isDark.value = !isDark.value;
+                    const theme = isDark.value ? 'dark' : 'light';
+                    ThemeManager.applyTheme(theme);
+                };
+
+                return {
+                    isDark,
+                    toggleTheme
+                };
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html> 
